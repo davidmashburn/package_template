@@ -1,4 +1,7 @@
 # coding: utf-8
+'''This is a blank python package.
+   This script will clone this package with new names everywhere (and skipping this script)'''
+
 import os
 import sys
 
@@ -31,13 +34,15 @@ def walk(directory, new_directory, new_name):
         old_f = os.path.join(directory, f)
         new_f = os.path.join(new_directory, f.replace(PT, new_name))
         if os.path.isdir(old_f):
-            walk(old_f, new_f, new_name)
-        else:
-            with open(old_f) as fid:
-                r = fid.read()
-            with open(new_f, 'w') as fid:
-                fid.write(r.replace(PT, new_name))
-            print ''
+            if f not in ['.git']: # always skip the .git folder :)
+                walk(old_f, new_f, new_name)
+        elif (not f not in ['generate_new_package.py'] and     # always skip this script ;)
+              os.path.splitext(f)[1] not in ['.pyc', '.pyo']): # and these extensions
+                with open(old_f) as fid:
+                    r = fid.read()
+                with open(new_f, 'w') as fid:
+                    fid.write(r.replace(PT, new_name))
+                print ''
     print ''
 
 if __name__ == '__main__':
